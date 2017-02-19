@@ -1,0 +1,41 @@
+
+
+字段名	字段描述	字段类型
+time	时间	integer
+linkgrpid	链路ID	integer
+usergrpid	用户群ID	integer
+icpid	ICP ID	integer
+productid	ICP产品ID	integer
+netid	流向ID	integer
+hostip	HostIP	varchar
+host	host域名	varchar
+UpByte	上行字节	bigint
+DnByte	下行字节	bigint
+Count	访问量	bigint
+Duration	时长	bigint
+UpPkt	上行报文数	bigint
+DnPkt	下行报文数	bigint
+resp_delay_valid_count	有效应答时延记录数	bigint
+resp_delay	平均应答时延	bigint
+client_server_delay_valid_count	有效客户端服务端时延记录数	bigint
+server_delay	平均服务端时延	bigint
+client_delay	平均客户端时延	bigint
+total_number	记录数	bigint
+resp_number	应答总数	bigint
+success_number	应答成功总数	bigint
+req_number	请求总数	bigint
+timeout_number	应答超时总数	bigint
+up_bps_valid_count	有效上行速率记录数	bigint
+upbps	平均上行速率	bigint
+dn_bps_valid_count	有效下行速率记录数	bigint
+dnbps	平均下行速率	bigint
+up_retrans_packet	上行重传报文数	bigint
+down_retrans_packet	下行重传报文数	bigint
+sample_flow_1_count	采样流1记录数	bigint
+sample_flow_1_up_bps	采样流1平均上行速率	bigint
+sample_flow_2_count	采样流2记录数	bigint
+sample_flow_2_down_bps	采样流2平均下行速率	bigint
+sample_flow_3_count	采样流3记录数	bigint
+sample_flow_3_up_bps	采样流3平均上行速率	bigint
+sample_flow_4_count	采样流4记录数	bigint
+sample_flow_4_down_bps	采样流4平均下行速率	bigint
