@@ -1,0 +1,8 @@
+- Brainstorming
+	- Curio
+	- Mindjet MindManager
+	- MindNode Pro
+	- OmniOutliner
+	- nvALT
+		- Markdown
+		- tab-indented outline
