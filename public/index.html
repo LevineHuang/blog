@@ -61,6 +61,127 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-A05-MI/02-TensorFlow/multilayer_perceptron" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/wiki/2017/08/08/A05-MI/02-TensorFlow/multilayer_perceptron/" class="article-date">
+  <time datetime="2017-08-08T01:26:33.729Z" itemprop="datePublished">2017-08-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="string">'''</span></div><div class="line">A Multilayer Perceptron implementation example using TensorFlow library.</div><div class="line">This example is using the MNIST database of handwritten digits</div><div class="line">(http://yann.lecun.com/exdb/mnist/)</div><div class="line"></div><div class="line">Author: Aymeric Damien</div><div class="line">Project: https://github.com/aymericdamien/TensorFlow-Examples/</div><div class="line">'''</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Import MINST data</span></div><div class="line"><span class="keyword">from</span> tensorflow.examples.tutorials.mnist <span class="keyword">import</span> input_data</div><div class="line">mnist = input_data.read_data_sets(<span class="string">"../../data/"</span>, one_hot=<span class="keyword">True</span>)</div><div class="line"></div><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div></pre></td></tr></table></figure>
+<pre><code>Extracting ../../data/train-images-idx3-ubyte.gz
+Extracting ../../data/train-labels-idx1-ubyte.gz
+Extracting ../../data/t10k-images-idx3-ubyte.gz
+Extracting ../../data/t10k-labels-idx1-ubyte.gz
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Parameters</span></div><div class="line">learning_rate = <span class="number">0.001</span></div><div class="line">training_epochs = <span class="number">15</span></div><div class="line">batch_size = <span class="number">100</span></div><div class="line">display_step = <span class="number">1</span></div><div class="line"></div><div class="line"><span class="comment"># Network Parameters</span></div><div class="line">n_hidden_1 = <span class="number">256</span> <span class="comment"># 1st layer number of features</span></div><div class="line">n_hidden_2 = <span class="number">256</span> <span class="comment"># 2nd layer number of features</span></div><div class="line">n_input = <span class="number">784</span> <span class="comment"># MNIST data input (img shape: 28*28)</span></div><div class="line">n_classes = <span class="number">10</span> <span class="comment"># MNIST total classes (0-9 digits)</span></div><div class="line"></div><div class="line"><span class="comment"># tf Graph input</span></div><div class="line">x = tf.placeholder(<span class="string">"float"</span>, [<span class="keyword">None</span>, n_input])</div><div class="line">y = tf.placeholder(<span class="string">"float"</span>, [<span class="keyword">None</span>, n_classes])</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Create model</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">multilayer_perceptron</span><span class="params">(x, weights, biases)</span>:</span></div><div class="line">    <span class="comment"># Hidden layer with RELU activation</span></div><div class="line">    layer_1 = tf.add(tf.matmul(x, weights[<span class="string">'h1'</span>]), biases[<span class="string">'b1'</span>])</div><div class="line">    layer_1 = tf.nn.relu(layer_1)</div><div class="line">    <span class="comment"># Hidden layer with RELU activation</span></div><div class="line">    layer_2 = tf.add(tf.matmul(layer_1, weights[<span class="string">'h2'</span>]), biases[<span class="string">'b2'</span>])</div><div class="line">    layer_2 = tf.nn.relu(layer_2)</div><div class="line">    <span class="comment"># Output layer with linear activation</span></div><div class="line">    out_layer = tf.matmul(layer_2, weights[<span class="string">'out'</span>]) + biases[<span class="string">'out'</span>]</div><div class="line">    <span class="keyword">return</span> out_layer</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Store layers weight &amp; bias</span></div><div class="line">weights = &#123;</div><div class="line">    <span class="string">'h1'</span>: tf.Variable(tf.random_normal([n_input, n_hidden_1])),</div><div class="line">    <span class="string">'h2'</span>: tf.Variable(tf.random_normal([n_hidden_1, n_hidden_2])),</div><div class="line">    <span class="string">'out'</span>: tf.Variable(tf.random_normal([n_hidden_2, n_classes]))</div><div class="line">&#125;</div><div class="line">biases = &#123;</div><div class="line">    <span class="string">'b1'</span>: tf.Variable(tf.random_normal([n_hidden_1])),</div><div class="line">    <span class="string">'b2'</span>: tf.Variable(tf.random_normal([n_hidden_2])),</div><div class="line">    <span class="string">'out'</span>: tf.Variable(tf.random_normal([n_classes]))</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment"># Construct model</span></div><div class="line">pred = multilayer_perceptron(x, weights, biases)</div><div class="line"></div><div class="line"><span class="comment"># Define loss and optimizer</span></div><div class="line">cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=pred, labels=y))</div><div class="line">optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)</div><div class="line"></div><div class="line"><span class="comment"># Initializing the variables</span></div><div class="line">init = tf.global_variables_initializer()</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tf.equal(A, B)是对比这两个矩阵或者向量的相等的元素，如果是相等的那就返回True，反正返回False，返回的值的矩阵维度和A是一样的</span></div><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">A = [[<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]]</div><div class="line">B = [[<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>]]</div><div class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</div><div class="line">    print(sess.run(tf.equal(A, B)))</div></pre></td></tr></table></figure>
+<pre><code>[[ True  True  True False False]]
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tf.argmax(vector, 1)：返回的是vector中的最大值的索引号，如果vector是一个向量，那就返回一个值，</span></div><div class="line"><span class="comment"># 如果是一个矩阵，那就返回一个向量，这个向量的每一个维度都是相对应矩阵行的最大值元素的索引号。</span></div><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf  </div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np  </div><div class="line">A = [[<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]]  </div><div class="line">B = [[<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>], [<span class="number">2</span>,<span class="number">4</span>,<span class="number">1</span>]]  </div><div class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:  </div><div class="line">    print(sess.run(tf.argmax(A, <span class="number">1</span>)))  </div><div class="line">    print(sess.run(tf.argmax(B, <span class="number">1</span>)))</div><div class="line"></div><div class="line"><span class="comment"># tf.cast：用于改变某个张量的数据类型</span></div><div class="line"></div><div class="line">A = tf.convert_to_tensor(np.array([[<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>], [<span class="number">3</span>,<span class="number">4</span>,<span class="number">8</span>,<span class="number">5</span>]]))  </div><div class="line"></div><div class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:  </div><div class="line">    print(A.dtype)</div><div class="line">    b = tf.cast(A, tf.float32)  </div><div class="line">    print(b.dtype)</div></pre></td></tr></table></figure>
+<pre><code>[4]
+[2 1]
+&lt;dtype: &apos;int64&apos;&gt;
+&lt;dtype: &apos;float32&apos;&gt;
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Launch the graph</span></div><div class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</div><div class="line">    sess.run(init)</div><div class="line"></div><div class="line">    <span class="comment"># Training cycle</span></div><div class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> range(training_epochs):</div><div class="line">        avg_cost = <span class="number">0.</span></div><div class="line">        total_batch = int(mnist.train.num_examples/batch_size)</div><div class="line">        <span class="comment"># Loop over all batches</span></div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(total_batch):</div><div class="line">            batch_x, batch_y = mnist.train.next_batch(batch_size)</div><div class="line">            <span class="comment"># Run optimization op (backprop) and cost op (to get loss value)</span></div><div class="line">            _, c = sess.run([optimizer, cost], feed_dict=&#123;x: batch_x,</div><div class="line">                                                          y: batch_y&#125;)</div><div class="line">            <span class="comment"># Compute average loss</span></div><div class="line">            avg_cost += c / total_batch</div><div class="line">        <span class="comment"># Display logs per epoch step</span></div><div class="line">        <span class="keyword">if</span> epoch % display_step == <span class="number">0</span>:</div><div class="line">            print(<span class="string">"Epoch:"</span>, <span class="string">'%04d'</span> % (epoch+<span class="number">1</span>), <span class="string">"cost="</span>, \</div><div class="line">                <span class="string">"&#123;:.9f&#125;"</span>.format(avg_cost))</div><div class="line">    print(<span class="string">"Optimization Finished!"</span>)</div><div class="line"></div><div class="line">    <span class="comment"># Test model</span></div><div class="line">    correct_prediction = tf.equal(tf.argmax(pred, <span class="number">1</span>), tf.argmax(y, <span class="number">1</span>))</div><div class="line">    <span class="comment"># Calculate accuracy</span></div><div class="line">    accuracy = tf.reduce_mean(tf.cast(correct_prediction, <span class="string">"float"</span>))</div><div class="line">    print(<span class="string">"Accuracy:"</span>, accuracy.eval(&#123;x: mnist.test.images, y: mnist.test.labels&#125;))</div></pre></td></tr></table></figure>
+<pre><code>Epoch: 0001 cost= 201.333574999
+Epoch: 0002 cost= 46.010647814
+Epoch: 0003 cost= 28.918377875
+Epoch: 0004 cost= 20.020559532
+Epoch: 0005 cost= 14.741128482
+Epoch: 0006 cost= 11.113235143
+Epoch: 0007 cost= 8.444069761
+Epoch: 0008 cost= 6.217341204
+Epoch: 0009 cost= 4.772409531
+Epoch: 0010 cost= 3.578625235
+Epoch: 0011 cost= 2.738378037
+Epoch: 0012 cost= 1.975170798
+Epoch: 0013 cost= 1.481307366
+Epoch: 0014 cost= 1.183054283
+Epoch: 0015 cost= 0.933368129
+Optimization Finished!
+Accuracy: 0.9483
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://levinehuang.github.io/wiki/2017/08/08/A05-MI/02-TensorFlow/multilayer_perceptron/" data-id="cj8ijf1uj001oyoo0t47emap8" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-A05-MI/03-SparkMLlib/SparkMLlib之01-Spark机器学习库介绍" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/wiki/2017/05/07/A05-MI/03-SparkMLlib/SparkMLlib之01-Spark机器学习库介绍/" class="article-date">
+  <time datetime="2017-05-07T11:59:27.120Z" itemprop="datePublished">2017-05-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="Spark机器学习库简介"><a href="#Spark机器学习库简介" class="headerlink" title="Spark机器学习库简介"></a>Spark机器学习库简介</h4><p>MLlib是Spark的机器学习库。旨在简化机器学习的工程实践工作，并方便扩展到更大规模。MLlib由一些通用的学习算法和工具组成，包括分类、回归、聚类、协同过滤、降维等，同时还包括底层的优化原语和高层的管道API。</p>
+<p>它提供如下工具：</p>
+<ol>
+<li>机器学习算法：常规机器学习算法包括分类、回归、聚类和协同过滤。</li>
+<li>特征工程：特征提取、特征转换、特征选择以及降维。</li>
+<li>管道：构造、评估和调整的管道的工具。</li>
+<li>存储：保存和加载算法、模型及管道。</li>
+<li>实用工具：线性代数，统计，数据处理等。</li>
+</ol>
+<h4 id="Spark机器学习库MLlib和ML"><a href="#Spark机器学习库MLlib和ML" class="headerlink" title="Spark机器学习库MLlib和ML"></a>Spark机器学习库MLlib和ML</h4><p>Spark机器学习库从 1.2 版本以后被分为两个包，分别是：</p>
+<ul>
+<li><p>spark.mllib 包含基于RDD的原始算法API。<br>Spark MLlib 历史比较长，1.0 以前的版本中已经包含了，提供的算法实现都是基于原始的 RDD，从学习角度上来讲，其实比较容易上手。如果您已经有机器学习方面的经验，那么您只需要熟悉下 MLlib 的 API 就可以开始数据分析工作了。想要基于这个包提供的工具构建完整并且复杂的机器学习流水线是比较困难的。</p>
+</li>
+<li><p>spark.ml 则提供了基于DataFrames 高层次的API，可以用来构建机器学习管道。<br>Spark ML Pipeline 从 Spark1.2 版本开始，成为可用并且较为稳定的新的机器学习库。ML Pipeline 弥补了原始 MLlib 库的不足，向用户提供了一个基于 DataFrame 的机器学习工作流式 API 套件，使用 ML Pipeline API，我们可以很方便的把数据处理，特征转换，正则化，以及多个机器学习算法联合起来，构建一个单一完整的机器学习流水线。显然，这种新的方式给我们提供了更灵活的方法，而且这也更符合机器学习过程的特点。</p>
+</li>
+</ul>
+<p>从官方文档来看，Spark ML Pipeline 虽然是被推荐的机器学习方式，但是并不会在短期内替代原始的 MLlib 库，因为 MLlib 已经包含了丰富稳定的算法实现，并且部分 ML Pipeline 实现基于 MLlib。</p>
+<p>在Spark2.0中，spark.mllib包中的RDD接口已进入维护模式。现在主要的机器学习接口为spark.ml包中的基于数据框接口。</p>
+<p>这一转变包含哪些信息？</p>
+<ol>
+<li>MLlib将继续在spark.mllib中支持基于RDD的接口。</li>
+<li>MLlib不会向基于RDD的接口中继续添加新的特征。</li>
+<li>在Spark2.0以后的版本中，将继续向基于数据框的接口添加新特征以缩小与基于RDD接口的差异。</li>
+<li>当两种接口之间达到特征相同时（初步估计为Spark2.2），基于RDD的接口将被废弃。</li>
+<li>基于RDD的接口将在Spark3.0中被移除。</li>
+</ol>
+<p>为什么MLlib转向DataFrames接口？</p>
+<ol>
+<li>数据框可以提供比RDD更容易掌握使用的接口。数据框的主要优点包括Spark数据源来源、结构化查询语言的数据框查询、各编程语言之间统一的接口。</li>
+<li>基于数据框的MLlib接口为多种机器学习算法与编程语言提供统一的接口。</li>
+<li>数据框有助于实现机器学习管道，特别是特征转换。</li>
+</ol>
+<h4 id="Spark机器学习库的功能"><a href="#Spark机器学习库的功能" class="headerlink" title="Spark机器学习库的功能"></a>Spark机器学习库的功能</h4><p>下面的列表列出了两个包的主要功能。</p>
+<h5 id="spark-mllib-数据类型，算法以及工具"><a href="#spark-mllib-数据类型，算法以及工具" class="headerlink" title="spark.mllib: 数据类型，算法以及工具"></a><a href="http://spark.apache.org/docs/latest/mllib-guide.html" target="_blank" rel="external">spark.mllib: 数据类型，算法以及工具</a></h5><p>Data types（数据类型）<br>Basic statistics（基础统计）<br>summary statistics（摘要统计）<br>correlations（相关性）<br>stratified sampling（分层抽样）<br>hypothesis testing（假设检验）<br>streaming significance testing<br>random data generation（随机数据生成）<br>Classification and regression（分类和回归）<br>linear models (SVMs, logistic regression, linear regression)（线性模型（SVM，逻辑回归，线性回归））<br>naive Bayes（朴素贝叶斯）<br>decision trees（决策树）<br>ensembles of trees (Random Forests and Gradient-Boosted Trees)（树套装（随机森林和梯度提升决策树））<br>isotonic regression（保序回归）<br>Collaborative filtering（协同过滤）<br>alternating least squares (ALS)（交替最小二乘（ALS））<br>Clustering（聚类）<br>k-means（K-均值）<br>Gaussian mixture（高斯混合）<br>power iteration clustering (PIC)（幂迭代聚类（PIC））<br>latent Dirichlet allocation (LDA)（隐含狄利克雷分配）<br>bisecting k-means（平分K-均值）<br>streaming k-means（流式K-均值）<br>Dimensionality reduction（降维）<br>singular value decomposition (SVD)（奇异值分解（SVD））<br>principal component analysis (PCA)（主成分分析（PCA））<br>Feature extraction and transformation（特征抽取和转换）<br>Frequent pattern mining（频繁模式挖掘）<br>FP-growth（FP-增长）<br>association rules（关联规则）<br>PrefixSpan（PrefixSpan）<br>Evaluation metrics（评价指标）<br>PMML model export（PMML模型导出）<br>Optimization (developer)（优化（开发者））<br>stochastic gradient descent（随机梯度下降）<br>limited-memory BFGS (L-BFGS)（有限的记忆BFGS（L-BFGS））</p>
+<h5 id="spark-ml-机器学习管道高级API"><a href="#spark-ml-机器学习管道高级API" class="headerlink" title="spark.ml: 机器学习管道高级API"></a><a href="http://spark.apache.org/docs/latest/ml-pipeline.html" target="_blank" rel="external">spark.ml: 机器学习管道高级API</a></h5><p>Overview: estimators, transformers and pipelines（概览：评估器，转换器和管道）<br>Extracting, transforming and selecting features（抽取，转换和选取特征）<br>Classification and regression（分类和回归）<br>Clustering（聚类）<br>Advanced topics（高级主题）</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://levinehuang.github.io/wiki/2017/05/07/A05-MI/03-SparkMLlib/SparkMLlib之01-Spark机器学习库介绍/" data-id="cj8ijf1uc001kyoo0zllzr8w3" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-A01-BigData/02-Spark/SparkSQL" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/wiki/2017/03/22/A01-BigData/02-Spark/SparkSQL/" class="article-date">
@@ -78,7 +199,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://levinehuang.github.io/wiki/2017/03/22/A01-BigData/02-Spark/SparkSQL/" data-id="cj2egklrd001hsco0jnmbd2h2" class="article-share-link">Share</a>
+      <a data-url="http://levinehuang.github.io/wiki/2017/03/22/A01-BigData/02-Spark/SparkSQL/" data-id="cj8ijf1u4001eyoo0r3ab7fwb" class="article-share-link">Share</a>
       
       
     </footer>
@@ -127,7 +248,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://levinehuang.github.io/wiki/2017/03/09/A05-MI/10-DL理论/DL之05-RNN/" data-id="cj2egklrt001osco0qf9902uj" class="article-share-link">Share</a>
+      <a data-url="http://levinehuang.github.io/wiki/2017/03/09/A05-MI/10-DL理论/DL之05-RNN/" data-id="cj8ijf1ut001syoo05q3sgkdd" class="article-share-link">Share</a>
       
       
     </footer>
@@ -167,7 +288,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://levinehuang.github.io/wiki/2017/03/01/A05-MI/10-DL理论/LSTM/" data-id="cj2egklrt001rsco0h9w9u31d" class="article-share-link">Share</a>
+      <a data-url="http://levinehuang.github.io/wiki/2017/03/01/A05-MI/10-DL理论/LSTM/" data-id="cj8ijf1uv001tyoo0prw7ucd6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -231,7 +352,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://levinehuang.github.io/wiki/2017/02/28/abc/" data-id="cj2egklrt001ssco04sffyrz3" class="article-share-link">Share</a>
+      <a data-url="http://levinehuang.github.io/wiki/2017/02/28/abc/" data-id="cj8ijf1uz001xyoo0o9ev0x30" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/MachineLearning/">MachineLearning</a></li></ul>
@@ -321,7 +442,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://levinehuang.github.io/wiki/2017/02/23/abc/" data-id="cj2egkls9001vsco00dw05ccq" class="article-share-link">Share</a>
+      <a data-url="http://levinehuang.github.io/wiki/2017/02/23/abc/" data-id="cj8ijf1up001pyoo06grga9s5" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/Deep-Learning/">Deep Learning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/MI/">MI</a></li></ul>
@@ -371,7 +492,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://levinehuang.github.io/wiki/2017/02/21/abc/" data-id="cj2egklrt001nsco03od6cxp8" class="article-share-link">Share</a>
+      <a data-url="http://levinehuang.github.io/wiki/2017/02/21/abc/" data-id="cj8ijf1uf001lyoo0arnnb19k" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/Deep-Learning/">Deep Learning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/Keras/">Keras</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/MI/">MI</a></li></ul>
@@ -416,7 +537,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://levinehuang.github.io/wiki/2017/01/19/abc/" data-id="cj2egklrt001msco007eb12gu" class="article-share-link">Share</a>
+      <a data-url="http://levinehuang.github.io/wiki/2017/01/19/abc/" data-id="cj8ijf1u6001fyoo07b50qzwp" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/Deep-Learning/">Deep Learning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/Keras/">Keras</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/MI/">MI</a></li></ul>
@@ -461,154 +582,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://levinehuang.github.io/wiki/2017/01/19/abc/" data-id="cj2egklrd001jsco00wb2iimq" class="article-share-link">Share</a>
+      <a data-url="http://levinehuang.github.io/wiki/2017/01/19/abc/" data-id="cj8ijf1u7001gyoo06hn0fcjw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/Deep-Learning/">Deep Learning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/Keras/">Keras</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/MI/">MI</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-abc" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/wiki/2017/01/19/abc/" class="article-date">
-  <time datetime="2017-01-19T02:46:00.000Z" itemprop="datePublished">2017-01-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/wiki/categories/DeepLearning/">DeepLearning</a>►<a class="article-category-link" href="/wiki/categories/DeepLearning/Keras/">Keras</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/wiki/2017/01/19/abc/">Keras之00-入门介绍</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Keras之00-入门介绍"><a href="#Keras之00-入门介绍" class="headerlink" title="Keras之00-入门介绍"></a>Keras之00-入门介绍</h2><hr>
-<p>Keras是一个高层神经网络库，Keras由纯Python编写而成并基于Tensorflow或Theano。Keras 为支持快速实验而生，能够把你的idea迅速转换为结果。</p>
-<h3 id="Keras特点"><a href="#Keras特点" class="headerlink" title="Keras特点"></a>Keras特点</h3><ul>
-<li>简易和快速的原型设计（keras具有高度模块化，极简，和可扩充特性）</li>
-<li>支持CNN和RNN，或二者的结合</li>
-<li>支持任意的链接方案（包括多输入和多输出训练）</li>
-<li>无缝CPU和GPU切换</li>
-</ul>
-<h3 id="Keras设计原则"><a href="#Keras设计原则" class="headerlink" title="Keras设计原则"></a>Keras设计原则</h3><ul>
-<li>模块性：模型可理解为一个独立的序列或图，完全可配置的模块以最少的代价自由组合在一起。具体而言，网络层、损失函数、优化器、初始化策略、激活函数、正则化方法都是独立的模块，你可以使用它们来构建自己的模型。</li>
-<li>极简主义：每个模块都应该尽量的简洁。每一段代码都应该在初次阅读时都显得直观易懂。没有黑魔法，因为它将给迭代和创新带来麻烦。</li>
-<li>易扩展性：添加新模块超级简单的容易，只需要仿照现有的模块编写新的类或函数即可。创建新模块的便利性使得Keras更适合于先进的研究工作。</li>
-<li>与Python协作：Keras没有单独的模型配置文件类型（作为对比，caffe有），模型由python代码描述，使其更紧凑和更易debug，并提供了扩展的便利性。</li>
-</ul>
-<h3 id="Keras新特性"><a href="#Keras新特性" class="headerlink" title="Keras新特性"></a>Keras新特性</h3><ul>
-<li>泛型模型：简单和强大的新模块，用于支持复杂深度学习模型的搭建。</li>
-<li>更优秀的性能：现在，Keras模型的编译时间得到缩短。所有的RNN现在都可以用两种方式实现，以供用户在不同配置任务和配置环境下取得最大性能。现在，基于Theano的RNN也可以被展开，以获得大概25%的加速计算。</li>
-<li>测量指标：现在，你可以提供一系列的测量指标来在Keras的任何监测点观察模型性能。</li>
-<li>更优的用户体验：我们面向使用者重新编写了代码，使得函数API更简单易记，同时提供更有效的出错信息。</li>
-<li>新版本的Keras提供了Lambda层，以实现一些简单的计算任务。</li>
-</ul>
-<h3 id="Keras基本概念"><a href="#Keras基本概念" class="headerlink" title="Keras基本概念"></a>Keras基本概念</h3><h4 id="符号计算"><a href="#符号计算" class="headerlink" title="符号计算"></a>符号计算</h4><p>Keras的底层库使用Theano或TensorFlow，这两个库也称为Keras的后端。Theano和TensorFlow都是一个“符号主义”的库。</p>
-<p>符号主义的计算首先定义各种变量，然后建立一个“计算图”，计算图规定了各个变量之间的计算关系。建立好的计算图需要编译已确定其内部细节，然而，此时的计算图还是一个“空壳子”，里面没有任何实际的数据，只有当你把需要运算的输入放进去后，才能在整个模型中形成数据流，从而形成输出值。</p>
-<p>Keras的模型搭建形式就是这种方法，在你搭建Keras模型完毕后，你的模型就是一个空壳子，只有实际生成可调用的函数后（K.function），输入数据，才会形成真正的数据流。</p>
-<p>大多数的深度学习框架使用的都是符号计算这一套方法，因为符号计算能够提供关键的计算优化、自动求导等功能。</p>
-<h4 id="张量-tensor"><a href="#张量-tensor" class="headerlink" title="张量(tensor)"></a>张量(tensor)</h4><p>张量可以看作是向量、矩阵的自然推广，我们用张量来表示广泛的数据类型。</p>
-<p>规模最小的张量是0阶张量，即标量，也就是一个数。</p>
-<p>当我们把一些数有序的排列起来，就形成了1阶张量，也就是一个向量</p>
-<p>如果我们继续把一组向量有序的排列起来，就形成了2阶张量，也就是一个矩阵</p>
-<p>把矩阵摞起来，就是3阶张量，我们可以称为一个立方体，具有3个颜色通道的彩色图片就是一个这样的立方体</p>
-<p>把矩阵摞起来，好吧这次我们真的没有给它起别名了，就叫4阶张量了，不要去试图想像4阶张量是什么样子，它就是个数学上的概念。</p>
-<p>张量的阶数有时候也称为维度，或者轴，轴这个词翻译自英文axis。譬如一个矩阵[[1,2],[3,4]]，是一个2阶张量，有两个维度或轴，沿着第0个轴（为了与python的计数方式一致，本文档维度和轴从0算起）你看到的是[1,2]，[3,4]两个向量，沿着第1个轴你看到的是[1,3]，[2,4]两个向量。</p>
-<p>要理解“沿着某个轴”是什么意思，不妨试着运行一下下面的代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"></div><div class="line">a = np.array([[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>]])</div><div class="line">sum0 = np.sum(a, axis=<span class="number">0</span>)</div><div class="line">sum1 = np.sum(a, axis=<span class="number">1</span>)</div><div class="line"></div><div class="line">print(sum0)  <span class="comment"># [4 6]</span></div><div class="line">print(sum1)  <span class="comment"># [3 7]</span></div></pre></td></tr></table></figure></p>
-<h4 id="‘th’与’tf’"><a href="#‘th’与’tf’" class="headerlink" title="‘th’与’tf’"></a>‘th’与’tf’</h4><p>这是一个无可奈何的问题，在如何表示一组彩色图片的问题上，Theano和TensorFlow发生了分歧，’th’模式，也即Theano模式会把100张RGB三通道的16×32（高为16宽为32）彩色图表示为下面这种形式（100,3,16,32），Caffe采取的也是这种方式。第0个维度是样本维，代表样本的数目，第1个维度是通道维，代表颜色通道数。后面两个就是高和宽了。</p>
-<p>而TensorFlow，即’tf’模式的表达形式是（100,16,32,3），即把通道维放在了最后。</p>
-<p>Keras默认的数据组织形式在~/.keras/keras.json中规定，可查看该文件的image_dim_ordering一项查看，也可在代码中通过K.image_dim_ordering()函数返回，请在网络的训练和测试中保持维度顺序一致。</p>
-<h4 id="泛型模型"><a href="#泛型模型" class="headerlink" title="泛型模型"></a>泛型模型</h4><p>Keras的核心数据结构是“模型”，模型是一种组织网络层的方式。Keras中主要的模型是Sequential模型，Sequential是一系列网络层按顺序构成的栈。</p>
-<p>在原本的Keras版本中，模型其实有两种:</p>
-<ul>
-<li>Sequential，称为序贯模型，也就是单输入单输出，一条路通到底，层与层之间只有相邻关系，跨层连接统统没有。这种模型编译速度快，操作上也比较简单</li>
-<li>Graph，即图模型，这个模型支持多输入多输出，层与层之间想怎么连怎么连，但是编译速度慢。Sequential其实是Graph的一个特殊情况。</li>
-</ul>
-<p>在现在这版Keras中，图模型被移除，而增加了了“functional model API”。由于functional model API表达的是“一般的模型”这个概念，我们这里将其译为泛型模型，即只要这个东西接收一个或一些张量作为输入，然后输出的也是一个或一些张量，那不管它是什么鬼，统统都称作“模型”。</p>
-<h4 id="batch"><a href="#batch" class="headerlink" title="batch"></a>batch</h4><p>参数更新的方式方式：</p>
-<ul>
-<li><p>Batch gradient descent，批梯度下降<br>遍历全部数据集算一次损失函数，然后算函数对各个参数的梯度，更新梯度。这种方法每更新一次参数都要把数据集里的所有样本都看一遍，计算量开销大，计算速度慢，不支持在线学习。</p>
-</li>
-<li><p>stochastic gradient descent(SGD)，随机梯度下降<br>每看一个数据就算一下损失函数，然后求梯度更新参数。这个方法速度比较快，但是收敛性能不太好，可能在最优点附近晃来晃去，hit不到最优点。两次参数的更新也有可能互相抵消掉，造成目标函数震荡的比较剧烈。</p>
-</li>
-<li><p>mini-batch gradient decent，小批的梯度下降<br>为了克服两种方法的缺点，现在一般采用的是一种折中手段，这种方法把数据分为若干个批，按批来更新参数，这样，一个批中的一组数据共同决定了本次梯度的方向，下降起来就不容易跑偏，减少了随机性。另一方面因为批的样本数与整个数据集相比小了很多，计算量也不是很大。</p>
-</li>
-</ul>
-<p>基本上现在的梯度下降都是基于mini-batch的，所以Keras的模块中经常会出现batch_size，就是指这个。</p>
-<p><strong>转载请注明作者Levine Huang及其出处</strong></p>
-<p>Github博客主页(<a href="http://levinehuang.github.io/wiki/">http://levinehuang.github.io/wiki/</a>)<br>CSDN博客(<a href="http://blog.csdn.net/donhlj" target="_blank" rel="external">http://blog.csdn.net/donhlj</a>)<br>简书主页(<a href="http://www.jianshu.com/users/2bd9b48f6ea8/latest_articles" target="_blank" rel="external">http://www.jianshu.com/users/2bd9b48f6ea8/latest_articles</a>)<br><strong>百度搜索levinehuang进入我的博客主页</strong></p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
-<li><a href="http://keras-cn.readthedocs.io/en/latest/" target="_blank" rel="external">http://keras-cn.readthedocs.io/en/latest/</a>　</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://levinehuang.github.io/wiki/2017/01/19/abc/" data-id="cj2egklrd001isco05q5nwpp9" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/Deep-Learning/">Deep Learning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/Keras/">Keras</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/MI/">MI</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-scala" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/wiki/2016/12/07/scala/" class="article-date">
-  <time datetime="2016-12-07T00:50:00.000Z" itemprop="datePublished">2016-12-07</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/wiki/categories/language/">language</a>►<a class="article-category-link" href="/wiki/categories/language/scala/">scala</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/wiki/2016/12/07/scala/">Scala高级类型</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>###　Scala类型系统总结<br>类型    语法类型<br> 类    class Person<br> 特质    trait Closable<br> 元组类型    (T1,T2,T3,…)<br> 函数类型    (T1,T2,t3,…)=&gt;T<br> 参数类型（泛型）    class Person[T1,T2,…]<br> 单例类型    this.type<br> 类型投影    Outter#Inner<br> 复合类型    A with B with C…<br> 结构体类型    {def f():Unit ….}<br> 中置类型    T1 A T2<br> 存在类型    T forSome {}</p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>［１］ <a href="https://yq.aliyun.com/articles/60370?spm=5176.8251999.569296.24" target="_blank" rel="external">https://yq.aliyun.com/articles/60370?spm=5176.8251999.569296.24</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://levinehuang.github.io/wiki/2016/12/07/scala/" data-id="cj2egklos0000sco0vgyhvgd8" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/Scala/">Scala</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/Spark/">Spark</a></li></ul>
 
     </footer>
   </div>
@@ -659,7 +636,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2016/11/">November 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2016/11/">November 2016</a></li></ul>
     </div>
   </div>
 
@@ -672,6 +649,14 @@
       <ul>
         
           <li>
+            <a href="/wiki/2017/08/08/A05-MI/02-TensorFlow/multilayer_perceptron/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/wiki/2017/05/07/A05-MI/03-SparkMLlib/SparkMLlib之01-Spark机器学习库介绍/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/wiki/2017/03/22/A01-BigData/02-Spark/SparkSQL/">(no title)</a>
           </li>
         
@@ -681,14 +666,6 @@
         
           <li>
             <a href="/wiki/2017/03/01/A05-MI/10-DL理论/LSTM/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/wiki/2017/02/28/abc/">ML之01-核密度估计Kernel Density Estimation(KDE)</a>
-          </li>
-        
-          <li>
-            <a href="/wiki/2017/02/23/abc/">DL之02-深度学习中的Data Augmentation方法</a>
           </li>
         
       </ul>
