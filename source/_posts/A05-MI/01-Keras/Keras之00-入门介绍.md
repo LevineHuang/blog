@@ -1,5 +1,5 @@
 ---
-title: 00-Keras之入门介绍
+title: Keras之00-入门介绍
 date: 2017-01-19 10:46:00
 updated	: 2017-01-19 10:46:00
 permalink: abc
@@ -13,7 +13,7 @@ categories:
 - Keras
 ---
 
-## 00-Keras之入门介绍
+## Keras之00-入门介绍
 ----
 
 Keras是一个高层神经网络库，Keras由纯Python编写而成并基于Tensorflow或Theano。Keras 为支持快速实验而生，能够把你的idea迅速转换为结果。
@@ -111,6 +111,12 @@ Keras的核心数据结构是“模型”，模型是一种组织网络层的方
 
 基本上现在的梯度下降都是基于mini-batch的，所以Keras的模块中经常会出现batch_size，就是指这个。
 
+**转载请注明作者Levine Huang及其出处**
+
+Github博客主页(http://levinehuang.github.io/wiki/)
+CSDN博客(http://blog.csdn.net/donhlj)
+简书主页(http://www.jianshu.com/users/2bd9b48f6ea8/latest_articles)
+**百度搜索levinehuang进入我的博客主页**
 
 ### Reference
 + http://keras-cn.readthedocs.io/en/latest/　

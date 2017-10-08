@@ -1,5 +1,5 @@
 ---
-title: 03-Keras之用MNIST数据集训练一个CNN
+title: Keras之03-用MNIST数据集训练一个CNN
 date: 2017-01-19 18:23:00
 updated	: 2017-01-19 18:23:00
 permalink: abc
@@ -13,7 +13,7 @@ categories:
 - Keras
 ---
 
-## 03-Keras之用MNIST数据集训练一个CNN
+## Keras之03-用MNIST数据集训练一个CNN
 ----
 
 #### 模型code

@@ -1,5 +1,5 @@
 ---
-title: 01-Keras之用MNIST数据集训练一个DNN
+title: Keras之01-用MNIST数据集训练一个DNN
 date: 2017-01-19 16:30:00
 updated	: 2017-01-19 16:30:00
 permalink: abc
@@ -13,7 +13,7 @@ categories:
 - Keras
 ---
 
-## 01-Keras之用MNIST数据集训练一个DNN
+## Keras之01-用MNIST数据集训练一个DNN
 ----
 
 #### 模型code

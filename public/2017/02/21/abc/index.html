@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Keras之04-用Cifar10数据集训练一个CNN | Welcome to Levine&#39;s Wikis</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Keras之04-用Cifar10数据集训练一个CNN
+Cifar数据集介绍Cifar是加拿大政府牵头投资的一个先进科学项目研究所。Cifar-10是由Hinton的两个大弟子Alex Krizhevsky、Ilya Sutskever收集的一个用于普适物体识别的数据集。
+Cifar-10由60000张32*32的RGB彩色图片构成，共10个分类。50000张训练，10000张测试（交叉验证）。这">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Keras之04-用Cifar10数据集训练一个CNN">
+<meta property="og:url" content="http://levinehuang.github.io/2017/02/21/abc/index.html">
+<meta property="og:site_name" content="Welcome to Levine's Wikis">
+<meta property="og:description" content="Keras之04-用Cifar10数据集训练一个CNN
+Cifar数据集介绍Cifar是加拿大政府牵头投资的一个先进科学项目研究所。Cifar-10是由Hinton的两个大弟子Alex Krizhevsky、Ilya Sutskever收集的一个用于普适物体识别的数据集。
+Cifar-10由60000张32*32的RGB彩色图片构成，共10个分类。50000张训练，10000张测试（交叉验证）。这">
+<meta property="og:image" content="http://levinehuang.github.io/../../../image/A0501/Cifar-dataset.png">
+<meta property="og:updated_time" content="2017-02-21T11:58:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Keras之04-用Cifar10数据集训练一个CNN">
+<meta name="twitter:description" content="Keras之04-用Cifar10数据集训练一个CNN
+Cifar数据集介绍Cifar是加拿大政府牵头投资的一个先进科学项目研究所。Cifar-10是由Hinton的两个大弟子Alex Krizhevsky、Ilya Sutskever收集的一个用于普适物体识别的数据集。
+Cifar-10由60000张32*32的RGB彩色图片构成，共10个分类。50000张训练，10000张测试（交叉验证）。这">
+<meta name="twitter:image" content="http://levinehuang.github.io/../../../image/A0501/Cifar-dataset.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Welcome to Levine&#39;s Wikis" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/wiki/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/wiki/" id="logo">Welcome to Levine&#39;s Wikis</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/wiki/">Home</a>
+        
+          <a class="main-nav-link" href="/wiki/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://levinehuang.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-abc" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/wiki/2017/02/21/abc/" class="article-date">
+  <time datetime="2017-02-21T11:58:00.000Z" itemprop="datePublished">2017-02-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/wiki/categories/DeepLearning/">DeepLearning</a>►<a class="article-category-link" href="/wiki/categories/DeepLearning/Keras/">Keras</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Keras之04-用Cifar10数据集训练一个CNN
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Keras之04-用Cifar10数据集训练一个CNN"><a href="#Keras之04-用Cifar10数据集训练一个CNN" class="headerlink" title="Keras之04-用Cifar10数据集训练一个CNN"></a>Keras之04-用Cifar10数据集训练一个CNN</h2><hr>
+<h3 id="Cifar数据集介绍"><a href="#Cifar数据集介绍" class="headerlink" title="Cifar数据集介绍"></a>Cifar数据集介绍</h3><p>Cifar是加拿大政府牵头投资的一个先进科学项目研究所。Cifar-10是由Hinton的两个大弟子Alex Krizhevsky、Ilya Sutskever收集的一个用于普适物体识别的数据集。</p>
+<p>Cifar-10由60000张32*32的RGB彩色图片构成，共10个分类。50000张训练，10000张测试（交叉验证）。这个数据集最大的特点在于将识别迁移到了普适物体，而且应用于多分类（姊妹数据集Cifar-100达到100类，ILSVRC比赛则是1000类）。<br><img src="../../../image/A0501/Cifar-dataset.png" alt="image"></p>
+<h4 id="普适物体识别的挑战"><a href="#普适物体识别的挑战" class="headerlink" title="普适物体识别的挑战"></a>普适物体识别的挑战</h4><ul>
+<li>数据中含有大量特征、噪声</li>
+<li>识别物体比例不一</li>
+<li>分类庞大（SVM难以应对）</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://levinehuang.github.io/wiki/2017/02/21/abc/" data-id="cj2egklrt001nsco03od6cxp8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/Deep-Learning/">Deep Learning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/Keras/">Keras</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/MI/">MI</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/wiki/2017/02/23/abc/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          DL之02-深度学习中的Data Augmentation方法
+        
+      </div>
+    </a>
+  
+  
+    <a href="/wiki/2017/01/19/abc/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Keras之03-用MNIST数据集训练一个CNN</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/DeepLearning/">DeepLearning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/DeepLearning/Keras/">Keras</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/MachineLearning/">MachineLearning</a></li><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/Tools/">Tools</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/Tools/hexo/">hexo</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/language/">language</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/language/scala/">scala</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/日志/">日志</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/日志/运维/">运维</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/Deep-Learning/">Deep Learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/Keras/">Keras</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/MI/">MI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/MachineLearning/">MachineLearning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/Spark/">Spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/Test/">Test</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/package/">package</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/pip/">pip</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/wiki/tags/AI/" style="font-size: 20px;">AI</a> <a href="/wiki/tags/Deep-Learning/" style="font-size: 20px;">Deep Learning</a> <a href="/wiki/tags/Keras/" style="font-size: 15px;">Keras</a> <a href="/wiki/tags/MI/" style="font-size: 20px;">MI</a> <a href="/wiki/tags/MachineLearning/" style="font-size: 10px;">MachineLearning</a> <a href="/wiki/tags/Python/" style="font-size: 10px;">Python</a> <a href="/wiki/tags/Scala/" style="font-size: 15px;">Scala</a> <a href="/wiki/tags/Spark/" style="font-size: 15px;">Spark</a> <a href="/wiki/tags/Test/" style="font-size: 10px;">Test</a> <a href="/wiki/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/wiki/tags/package/" style="font-size: 10px;">package</a> <a href="/wiki/tags/pip/" style="font-size: 10px;">pip</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2016/11/">November 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/wiki/2017/03/22/A01-BigData/02-Spark/SparkSQL/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/wiki/2017/03/09/A05-MI/10-DL理论/DL之05-RNN/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/wiki/2017/03/01/A05-MI/10-DL理论/LSTM/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/wiki/2017/02/28/abc/">ML之01-核密度估计Kernel Density Estimation(KDE)</a>
+          </li>
+        
+          <li>
+            <a href="/wiki/2017/02/23/abc/">DL之02-深度学习中的Data Augmentation方法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Levine Huang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/wiki/" class="mobile-nav-link">Home</a>
+  
+    <a href="/wiki/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/wiki/fancybox/jquery.fancybox.css">
+  <script src="/wiki/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/wiki/js/script.js"></script>
+
+  </div>
+</body>
+</html>
