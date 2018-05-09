@@ -1,4 +1,13 @@
-
+---
+title: A Multilayer Perceptron implementation example using TensorFlow
+date: 2017-02-28 12:17:00
+updated	: 2018-05-09 12:17:00
+permalink: abc
+tags:
+- MachineLearning
+categories:
+- MachineLearning
+---
 
 ```python
 '''
@@ -24,7 +33,6 @@ import tensorflow as tf
     Extracting ../../data/train-labels-idx1-ubyte.gz
     Extracting ../../data/t10k-images-idx3-ubyte.gz
     Extracting ../../data/t10k-labels-idx1-ubyte.gz
-
 
 
 ```python
@@ -99,7 +107,6 @@ with tf.Session() as sess:
     [[ True  True  True False False]]
 
 
-
 ```python
 # tf.argmax(vector, 1)：返回的是vector中的最大值的索引号，如果vector是一个向量，那就返回一个值，
 # 如果是一个矩阵，那就返回一个向量，这个向量的每一个维度都是相对应矩阵行的最大值元素的索引号。
@@ -125,7 +132,6 @@ with tf.Session() as sess:
     [2 1]
     <dtype: 'int64'>
     <dtype: 'float32'>
-
 
 
 ```python
