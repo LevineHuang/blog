@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>DL之02-深度学习中的Data Augmentation方法 | Welcome to Levine&#39;s Wikis</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="DL之02-深度学习中的Data Augmentation方法
+在深度学习中，为了避免出现过拟合（Overfitting），通常我们需要输入充足的数据量。当数据量不够大时候，常常采用以下几种方法：
+
+Data Augmentation：通过平移、 翻转、加噪声等方法从已有数据中创造出一批“新”的数据，人工增加训练集的大小。
+
+Regularization：数据量比较小会导致模型过拟合, 使得训练误">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DL之02-深度学习中的Data Augmentation方法">
+<meta property="og:url" content="http://levinehuang.github.io/2017/02/23/abc/index.html">
+<meta property="og:site_name" content="Welcome to Levine's Wikis">
+<meta property="og:description" content="DL之02-深度学习中的Data Augmentation方法
+在深度学习中，为了避免出现过拟合（Overfitting），通常我们需要输入充足的数据量。当数据量不够大时候，常常采用以下几种方法：
+
+Data Augmentation：通过平移、 翻转、加噪声等方法从已有数据中创造出一批“新”的数据，人工增加训练集的大小。
+
+Regularization：数据量比较小会导致模型过拟合, 使得训练误">
+<meta property="og:updated_time" content="2017-02-28T04:16:02.785Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DL之02-深度学习中的Data Augmentation方法">
+<meta name="twitter:description" content="DL之02-深度学习中的Data Augmentation方法
+在深度学习中，为了避免出现过拟合（Overfitting），通常我们需要输入充足的数据量。当数据量不够大时候，常常采用以下几种方法：
+
+Data Augmentation：通过平移、 翻转、加噪声等方法从已有数据中创造出一批“新”的数据，人工增加训练集的大小。
+
+Regularization：数据量比较小会导致模型过拟合, 使得训练误">
+  
+    <link rel="alternate" href="/atom.xml" title="Welcome to Levine&#39;s Wikis" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/wiki/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/wiki/" id="logo">Welcome to Levine&#39;s Wikis</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/wiki/">Home</a>
+        
+          <a class="main-nav-link" href="/wiki/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://levinehuang.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-abc" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/wiki/2017/02/23/abc/" class="article-date">
+  <time datetime="2017-02-23T00:47:00.000Z" itemprop="datePublished">2017-02-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/wiki/categories/DeepLearning/">DeepLearning</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      DL之02-深度学习中的Data Augmentation方法
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="DL之02-深度学习中的Data-Augmentation方法"><a href="#DL之02-深度学习中的Data-Augmentation方法" class="headerlink" title="DL之02-深度学习中的Data Augmentation方法"></a>DL之02-深度学习中的Data Augmentation方法</h2><hr>
+<p>在深度学习中，为了避免出现过拟合（Overfitting），通常我们需要输入充足的数据量。当数据量不够大时候，常常采用以下几种方法：</p>
+<ol>
+<li><p>Data Augmentation：通过平移、 翻转、加噪声等方法从已有数据中创造出一批“新”的数据，人工增加训练集的大小。</p>
+</li>
+<li><p>Regularization：数据量比较小会导致模型过拟合, 使得训练误差很小而测试误差特别大. 通过在Loss Function 后面加上正则项可以抑制过拟合的产生。缺点是引入了一个需要手动调整的hyper-parameter。</p>
+</li>
+<li><p>Dropout：这也是一种正则化手段，不过跟以上不同的是它通过随机将部分神经元的输出置零来实现。详见 <a href="http://www.cs.toronto.edu/~hinton/absps/JMLRdropout.pdf" target="_blank" rel="external">http://www.cs.toronto.edu/~hinton/absps/JMLRdropout.pdf</a></p>
+</li>
+<li><p>Unsupervised Pre-training：用Auto-Encoder或者RBM的卷积形式一层一层地做无监督预训练, 最后加上分类层做有监督的Fine-Tuning。参考 <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.207.1102&amp;rep=rep1&amp;type=pdf" target="_blank" rel="external">http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.207.1102&amp;rep=rep1&amp;type=pdf</a></p>
+</li>
+<li><p>Transfer Learning：在某些情况下，训练集的收集可能非常困难或代价高昂。因此，有必要创造出某种高性能学习机（learner），使得它们能够基于从其他领域易于获得的数据上进行训练，并能够在对另一领域的数据进行预测时表现优异。这种方法，就是所谓的迁移学习（transfer learning）。</p>
+</li>
+</ol>
+<h3 id="数据增强变换（Data-Augmentation-Transformation）"><a href="#数据增强变换（Data-Augmentation-Transformation）" class="headerlink" title="数据增强变换（Data Augmentation Transformation）"></a>数据增强变换（Data Augmentation Transformation）</h3><h4 id="数字图像处理中图像几何变换方法："><a href="#数字图像处理中图像几何变换方法：" class="headerlink" title="数字图像处理中图像几何变换方法："></a>数字图像处理中图像几何变换方法：</h4><ul>
+<li>旋转 | 反射变换(Rotation/reflection): 随机旋转图像一定角度; 改变图像内容的朝向;</li>
+<li>翻转变换(flip): 沿着水平或者垂直方向翻转图像;</li>
+<li>缩放变换(zoom): 按照一定的比例放大或者缩小图像;</li>
+<li>平移变换(shift): 在图像平面上对图像以一定方式进行平移;可以采用随机或人为定义的方式指定平移范围和平移步长, 沿水平或竖直方向进行平移. 改变图像内容的位置;</li>
+<li>尺度变换(scale): 对图像按照指定的尺度因子, 进行放大或缩小; 或者参照SIFT特征提取思想, 利用指定的尺度因子对图像滤波构造尺度空间. 改变图像内容的大小或模糊程度;</li>
+<li>对比度变换(contrast): 在图像的HSV颜色空间，改变饱和度S和V亮度分量，保持色调H不变. 对每个像素的S和V分量进行指数运算(指数因子在0.25到4之间), 增加光照变化;</li>
+<li>噪声扰动(noise): 对图像的每个像素RGB进行随机扰动, 常用的噪声模式是椒盐噪声和高斯噪声;</li>
+<li>颜色变换(color): 在训练集像素值的RGB颜色空间进行PCA。</li>
+</ul>
+<p>不同的任务背景下, 我们可以通过图像的几何变换, 使用以下一种或多种组合数据增强变换来增加输入数据的量。 几何变换不改变像素值, 而是改变像素所在的位置。 通过Data Augmentation方法扩张了数据集的范围, 作为输入时, 以期待网络学习到更多的图像不变性特征。</p>
+<h4 id="Keras中的图像几何变换方法"><a href="#Keras中的图像几何变换方法" class="headerlink" title="Keras中的图像几何变换方法"></a><a href="https://keras.io/preprocessing/image/" target="_blank" rel="external">Keras中的图像几何变换方法</a></h4><p>Keras中ImageDataGenerator　实现了大多数上文中提到的图像几何变换方法。如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">keras.preprocessing.image.ImageDataGenerator(featurewise_center=<span class="keyword">False</span>,</div><div class="line">    samplewise_center=<span class="keyword">False</span>,</div><div class="line">    featurewise_std_normalization=<span class="keyword">False</span>,</div><div class="line">    samplewise_std_normalization=<span class="keyword">False</span>,</div><div class="line">    zca_whitening=<span class="keyword">False</span>,</div><div class="line">    rotation_range=<span class="number">0.</span>,</div><div class="line">    width_shift_range=<span class="number">0.</span>,</div><div class="line">    height_shift_range=<span class="number">0.</span>,</div><div class="line">    shear_range=<span class="number">0.</span>,</div><div class="line">    zoom_range=<span class="number">0.</span>,</div><div class="line">    channel_shift_range=<span class="number">0.</span>,</div><div class="line">    fill_mode=<span class="string">'nearest'</span>,</div><div class="line">    cval=<span class="number">0.</span>,</div><div class="line">    horizontal_flip=<span class="keyword">False</span>,</div><div class="line">    vertical_flip=<span class="keyword">False</span>,</div><div class="line">    rescale=<span class="keyword">None</span>,</div><div class="line">    dim_ordering=K.image_dim_ordering())</div></pre></td></tr></table></figure>
+<h5 id="参数说明："><a href="#参数说明：" class="headerlink" title="参数说明："></a>参数说明：</h5><ul>
+<li>featurewise_center: Boolean. Set input mean to 0 over the dataset, feature-wise.</li>
+<li>featurewise_std_normalization: Boolean. Divide inputs by std of the dataset, feature-wise.</li>
+<li>zca_whitening: Boolean. Apply ZCA whitening.</li>
+<li>samplewise_std_normalization: Boolean. Divide each input by its std.</li>
+<li>width_shift_range: Float (fraction of total width). Range for random horizontal shifts.</li>
+<li>rotation_range: Int. Degree range for random rotations.</li>
+<li>height_shift_range: Float (fraction of total height). Range for random vertical shifts.</li>
+<li>shear_range: Float. Shear Intensity (Shear angle in counter-clockwise direction as radians)</li>
+<li>zoom_range: Float or [lower, upper]. Range for random zoom. If a float,  [lower, upper] = [1-zoom_range, 1+zoom_range].</li>
+<li>channel_shift_range: Float. Range for random channel shifts.</li>
+<li>fill_mode: One of {“constant”, “nearest”, “reflect” or “wrap”}. Points outside the boundaries of the input are filled according to the given mode.</li>
+<li>cval: Float or Int. Value used for points outside the boundaries when fill_mode = “constant”.</li>
+<li>horizontal_flip: Boolean. Randomly flip inputs horizontally.</li>
+<li>vertical_flip: Boolean. Randomly flip inputs vertically.</li>
+<li>rescale: rescaling factor. Defaults to None. If None or 0, no rescaling is applied, otherwise we multiply the data by the value provided (before applying any other transformation).</li>
+<li>dim_ordering: One of {“th”, “tf”}. “tf” mode means that the images should have shape  (samples, height, width, channels), “th” mode means that the images should have shape  (samples, channels, height, width). It defaults to the image_dim_ordering value found in your Keras config file at  ~/.keras/keras.json. If you never set it, then it will be “tf”.</li>
+</ul>
+<h5 id="其它方法"><a href="#其它方法" class="headerlink" title="其它方法"></a>其它方法</h5><ul>
+<li>Label shuffle: 类别不平衡数据的增广，参见海康威视ILSVRC2016的report</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://levinehuang.github.io/wiki/2017/02/23/abc/" data-id="cj8ijf1up001pyoo06grga9s5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/AI/">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/Deep-Learning/">Deep Learning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/MI/">MI</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/wiki/2017/02/28/abc/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          ML之01-核密度估计Kernel Density Estimation(KDE)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/wiki/2017/02/21/abc/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Keras之04-用Cifar10数据集训练一个CNN</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/DeepLearning/">DeepLearning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/DeepLearning/Keras/">Keras</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/MachineLearning/">MachineLearning</a></li><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/Tools/">Tools</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/Tools/hexo/">hexo</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/language/">language</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/language/scala/">scala</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/日志/">日志</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/日志/运维/">运维</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/Deep-Learning/">Deep Learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/Keras/">Keras</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/MI/">MI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/MachineLearning/">MachineLearning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/Spark/">Spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/Test/">Test</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/package/">package</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/pip/">pip</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/wiki/tags/AI/" style="font-size: 20px;">AI</a> <a href="/wiki/tags/Deep-Learning/" style="font-size: 20px;">Deep Learning</a> <a href="/wiki/tags/Keras/" style="font-size: 15px;">Keras</a> <a href="/wiki/tags/MI/" style="font-size: 20px;">MI</a> <a href="/wiki/tags/MachineLearning/" style="font-size: 10px;">MachineLearning</a> <a href="/wiki/tags/Python/" style="font-size: 10px;">Python</a> <a href="/wiki/tags/Scala/" style="font-size: 15px;">Scala</a> <a href="/wiki/tags/Spark/" style="font-size: 15px;">Spark</a> <a href="/wiki/tags/Test/" style="font-size: 10px;">Test</a> <a href="/wiki/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/wiki/tags/package/" style="font-size: 10px;">package</a> <a href="/wiki/tags/pip/" style="font-size: 10px;">pip</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2016/11/">November 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/wiki/2017/08/08/A05-MI/02-TensorFlow/multilayer_perceptron/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/wiki/2017/05/07/A05-MI/03-SparkMLlib/SparkMLlib之01-Spark机器学习库介绍/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/wiki/2017/03/22/A01-BigData/02-Spark/SparkSQL/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/wiki/2017/03/09/A05-MI/10-DL理论/DL之05-RNN/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/wiki/2017/03/01/A05-MI/10-DL理论/LSTM/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Levine Huang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/wiki/" class="mobile-nav-link">Home</a>
+  
+    <a href="/wiki/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/wiki/fancybox/jquery.fancybox.css">
+  <script src="/wiki/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/wiki/js/script.js"></script>
+
+  </div>
+</body>
+</html>
