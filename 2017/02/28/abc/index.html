@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>ML之01-核密度估计Kernel Density Estimation(KDE) | Welcome to Levine&#39;s Wikis</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="ML之01-核密度估计Kernel Density Estimation(KDE)
+由给定样本集合求解随机变量的分布密度函数问题是概率统计学的基本问题之一。解决这一问题的方法包括参数估计和非参数估计。
+参数估计
+参数回归分析需要假定数据分布符合某种特定的性态，如线性、可化线性或指数性态等，然后在目标函数族中寻找特定的解，即确定回归模型中的未知参数。
+参数判别分析需要假定作为判别依据的、随机取值的数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ML之01-核密度估计Kernel Density Estimation(KDE)">
+<meta property="og:url" content="http://levinehuang.github.io/2017/02/28/abc/index.html">
+<meta property="og:site_name" content="Welcome to Levine's Wikis">
+<meta property="og:description" content="ML之01-核密度估计Kernel Density Estimation(KDE)
+由给定样本集合求解随机变量的分布密度函数问题是概率统计学的基本问题之一。解决这一问题的方法包括参数估计和非参数估计。
+参数估计
+参数回归分析需要假定数据分布符合某种特定的性态，如线性、可化线性或指数性态等，然后在目标函数族中寻找特定的解，即确定回归模型中的未知参数。
+参数判别分析需要假定作为判别依据的、随机取值的数">
+<meta property="og:image" content="http://levinehuang.github.io/../../../image/A0511/kde_kernels.png">
+<meta property="og:image" content="http://levinehuang.github.io/../../../image/A0511/sklearn_kernels.png">
+<meta property="og:image" content="http://levinehuang.github.io/../../../image/A0511/kde_bandwidth.png">
+<meta property="og:updated_time" content="2017-02-28T04:17:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ML之01-核密度估计Kernel Density Estimation(KDE)">
+<meta name="twitter:description" content="ML之01-核密度估计Kernel Density Estimation(KDE)
+由给定样本集合求解随机变量的分布密度函数问题是概率统计学的基本问题之一。解决这一问题的方法包括参数估计和非参数估计。
+参数估计
+参数回归分析需要假定数据分布符合某种特定的性态，如线性、可化线性或指数性态等，然后在目标函数族中寻找特定的解，即确定回归模型中的未知参数。
+参数判别分析需要假定作为判别依据的、随机取值的数">
+<meta name="twitter:image" content="http://levinehuang.github.io/../../../image/A0511/kde_kernels.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Welcome to Levine&#39;s Wikis" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/wiki/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/wiki/" id="logo">Welcome to Levine&#39;s Wikis</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/wiki/">Home</a>
+        
+          <a class="main-nav-link" href="/wiki/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://levinehuang.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-abc" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/wiki/2017/02/28/abc/" class="article-date">
+  <time datetime="2017-02-28T04:17:00.000Z" itemprop="datePublished">2017-02-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/wiki/categories/MachineLearning/">MachineLearning</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ML之01-核密度估计Kernel Density Estimation(KDE)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="ML之01-核密度估计Kernel-Density-Estimation-KDE"><a href="#ML之01-核密度估计Kernel-Density-Estimation-KDE" class="headerlink" title="ML之01-核密度估计Kernel Density Estimation(KDE)"></a>ML之01-核密度估计Kernel Density Estimation(KDE)</h2><hr>
+<p>由给定样本集合求解随机变量的分布密度函数问题是概率统计学的基本问题之一。解决这一问题的方法包括参数估计和非参数估计。</p>
+<h3 id="参数估计"><a href="#参数估计" class="headerlink" title="参数估计"></a>参数估计</h3><ul>
+<li>参数回归分析<br>需要假定数据分布符合某种特定的性态，如线性、可化线性或指数性态等，然后在目标函数族中寻找特定的解，即确定回归模型中的未知参数。</li>
+<li>参数判别分析<br>需要假定作为判别依据的、随机取值的数据样本在各个可能的类别中都服从特定的分布。</li>
+</ul>
+<p>经验和理论说明，参数模型的这种基本假定与实际的物理模型之间常常存在较大的差距，这些方法并非总能取得令人满意的结果。</p>
+<h3 id="非参数估计"><a href="#非参数估计" class="headerlink" title="非参数估计"></a>非参数估计</h3><p>由于上述缺陷，Rosenblatt和Parzen提出了非参数估计方法，即核密度估计方法。核密度估计Kernel Density Estimation(KDE)是在概率论中用来估计未知的密度函数，属于非参数检验方法之一。</p>
+<p>由于核密度估计方法不利用有关数据分布的先验知识，对数据分布不附加任何假定，是一种从数据样本本身出发研究数据分布特征的方法，因而，在统计学理论和应用领域均受到高度的重视。</p>
+<p>核密度估计，就是采用平滑的峰值函数(“核”)来拟合观察到的数据点，从而对真实的概率分布曲线进行模拟。</p>
+<h3 id="sklearn中实现的核函数"><a href="#sklearn中实现的核函数" class="headerlink" title="sklearn中实现的核函数"></a>sklearn中实现的核函数</h3><p>核密度估计有多种内核，如下图：<br><img src="../../../image/A0511/kde_kernels.png" alt="image"><br>sklearn核函数形式<br><img src="../../../image/A0511/sklearn_kernels.png" alt="image"><br>虽然采用不同的核函数都可以获得一致性的结论（整体趋势和密度分布规律性基本一致），但核密度函数也不是完美的。除了核算法的选择外，带宽（bandwidth）也会影响密度估计，过大或过小的带宽值都会影响估计结果。如下图(d,e,f)所示:<br><img src="../../../image/A0511/kde_bandwidth.png" alt="image"></p>
+<h3 id="SVM的核函数如何选取"><a href="#SVM的核函数如何选取" class="headerlink" title="SVM的核函数如何选取"></a>SVM的核函数如何选取</h3><ol>
+<li>如果Feature的数量很大，跟样本数量差不多，这时候选用LR或者是Linear Kernel的SVM</li>
+<li>如果Feature的数量比较小，样本数量一般，不算大也不算小，选用SVM+Gaussian Kernel</li>
+<li>如果Feature的数量比较小，而样本数量很多，需要手工添加一些feature变成第一种情况</li>
+</ol>
+<h3 id="核密度估计的应用"><a href="#核密度估计的应用" class="headerlink" title="核密度估计的应用"></a>核密度估计的应用</h3><ul>
+<li>股票、金融等风险预测<br>在单变量核密度估计的基础上，可以建立风险价值的预测模型。通过对核密度估计变异系数的加权处理，可以建立不同的风险价值的预测模型。</li>
+<li>测量建筑密度</li>
+<li>获取犯罪情况报告</li>
+<li>发现对城镇或野生动物栖息地造成影响的道路或公共设施管线</li>
+<li>热力图</li>
+</ul>
+<p>总而言之，核密度就是用来估计密度的，如果你有一系列空间点数据，那么核密度估计往往是比较好的可视化方法。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://levinehuang.github.io/wiki/2017/02/28/abc/" data-id="cj8ijf1uz001xyoo0o9ev0x30" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/wiki/tags/MachineLearning/">MachineLearning</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/wiki/2017/03/01/A05-MI/10-DL理论/LSTM/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/wiki/2017/02/23/abc/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">DL之02-深度学习中的Data Augmentation方法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/DeepLearning/">DeepLearning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/DeepLearning/Keras/">Keras</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/MachineLearning/">MachineLearning</a></li><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/Tools/">Tools</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/Tools/hexo/">hexo</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/language/">language</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/language/scala/">scala</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/日志/">日志</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/wiki/categories/日志/运维/">运维</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/Deep-Learning/">Deep Learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/Keras/">Keras</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/MI/">MI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/MachineLearning/">MachineLearning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/Spark/">Spark</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/Test/">Test</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/package/">package</a></li><li class="tag-list-item"><a class="tag-list-link" href="/wiki/tags/pip/">pip</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/wiki/tags/AI/" style="font-size: 20px;">AI</a> <a href="/wiki/tags/Deep-Learning/" style="font-size: 20px;">Deep Learning</a> <a href="/wiki/tags/Keras/" style="font-size: 15px;">Keras</a> <a href="/wiki/tags/MI/" style="font-size: 20px;">MI</a> <a href="/wiki/tags/MachineLearning/" style="font-size: 10px;">MachineLearning</a> <a href="/wiki/tags/Python/" style="font-size: 10px;">Python</a> <a href="/wiki/tags/Scala/" style="font-size: 15px;">Scala</a> <a href="/wiki/tags/Spark/" style="font-size: 15px;">Spark</a> <a href="/wiki/tags/Test/" style="font-size: 10px;">Test</a> <a href="/wiki/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/wiki/tags/package/" style="font-size: 10px;">package</a> <a href="/wiki/tags/pip/" style="font-size: 10px;">pip</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/wiki/archives/2016/11/">November 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/wiki/2017/08/08/A05-MI/02-TensorFlow/multilayer_perceptron/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/wiki/2017/05/07/A05-MI/03-SparkMLlib/SparkMLlib之01-Spark机器学习库介绍/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/wiki/2017/03/22/A01-BigData/02-Spark/SparkSQL/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/wiki/2017/03/09/A05-MI/10-DL理论/DL之05-RNN/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/wiki/2017/03/01/A05-MI/10-DL理论/LSTM/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Levine Huang<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/wiki/" class="mobile-nav-link">Home</a>
+  
+    <a href="/wiki/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/wiki/fancybox/jquery.fancybox.css">
+  <script src="/wiki/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/wiki/js/script.js"></script>
+
+  </div>
+</body>
+</html>
