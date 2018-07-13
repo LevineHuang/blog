@@ -1,7 +1,7 @@
 ---
-title: A Multilayer Perceptron implementation example using TensorFlow
+title: 基于TensorFlow实现多层感知器
 date: 2017-02-28 12:17:00
-updated	: 2018-05-09 12:17:00
+updated	: 2018-06-27 12:17:00
 permalink: abc
 tags:
 - Keras
