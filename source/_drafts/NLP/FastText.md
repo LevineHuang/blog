@@ -66,7 +66,21 @@ $$
 
 https://github.com/tensorflow/tensor2tensor
 
+主流的序列转换模型基于复杂的循环或卷积神经网络，这些网络包含一个encoder和一个decoder。表现最好的模型通过注意力机制将encoder和decoder联系起来。
+
 论文提出了一种新的简单网络结构，**Transformer**，仅基于注意力机制，无需循环和卷积。
+
+在两个机器翻译任务上的试验结果表明，该模型取得了优异的翻译质量，且更易并行，训练时间更短。
+
+WMT 2014 Englishto-German翻译任务：28.4 BLEU
+
+WMT 2014 English-to-French翻译任务：41.0 BLEU
+
+BLEU(**bilingual evaluation understudy**)：评估机器翻译质量的一种算法。
+
+
+
+完全依赖于一种注意力机制来获得输入输出之间的全局依赖关系。
 
 通过attention来获得一个句子中词语的context表示，同时考虑所有的词并将其转化为一个fixed length向量。
 
