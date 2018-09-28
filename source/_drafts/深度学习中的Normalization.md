@@ -114,6 +114,12 @@ Google 将这一现象总结为 Internal Covariate Shift，简称 ICS. 什么是
 
 ## 主流 Normalization 方法梳理
 
+### Local Responce Normalization：局部响应归一化
+
+基本思路是，假如这是网络的一块，比如是 13×13×256， LRN 要做的就是选取一个位置，比如说这样一个位置，从这个位置穿过整个通道，能得到 256 个数字，并进行归一化。进行局部响应归一化的动机是，对于这张 13×13 的图像中的每个位置来说，我们可能并不需要太多的高激活神经元。但是后来，很多研究者发现 LRN 起不到太大作用，因为并不重要，而且我们现在并不用 LRN 来训练网络。
+
+
+
 在上一节中，我们提炼了 Normalization 的通用公式：
 
 ![img](https://mmbiz.qpic.cn/mmbiz_png/scY7mZBkgetPnNZgwDrMMABg6WhntVsbhjXXUIibia5AwzWFYFdDQ8yBNJCP4TBuMKRFaYAfMDWkt52YQW3TUtWg/640?tp=webp&wxfrom=5&wx_lazy=1)
